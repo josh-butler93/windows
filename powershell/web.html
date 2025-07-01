@@ -1,0 +1,36 @@
+$listener = New-Object System.Net.HttpListener
+$listener.Prefixes.Add("http://localhost:8080/")
+$listener.Start()
+
+Write-Host "Launcher running at http://localhost:8080"
+
+while ($listener.IsListening) {
+    $context = $listener.GetContext()
+    $request = $context.Request
+    $response = $context.Response
+
+    $urlPath = $request.Url.AbsolutePath
+
+    # Serve index.html at root
+    if ($urlPath -eq "/") {
+        $fileBytes = [System.IO.File]::ReadAllBytes("C:\Launcher\index.html")
+        $response.ContentType = "text/html"
+        $response.OutputStream.Write($fileBytes, 0, $fileBytes.Length)
+    }
+    # Serve .rdp files directly if requested
+    elseif ($urlPath -match "\.rdp$") {
+        $rdpFile = "C:\Launcher\" + ($urlPath.TrimStart("/"))
+        if (Test-Path $rdpFile) {
+            $fileBytes = [System.IO.File]::ReadAllBytes($rdpFile)
+            $response.ContentType = "application/x-rdp"
+            $response.OutputStream.Write($fileBytes, 0, $fileBytes.Length)
+        } else {
+            $response.StatusCode = 404
+        }
+    }
+    else {
+        $response.StatusCode = 404
+    }
+
+    $response.Close()
+}
