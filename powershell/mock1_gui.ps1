@@ -2,21 +2,21 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "LabNet RDP Launcher"
+$form.Text = "RDP Launcher" #!!!Script Title
 $form.Size = New-Object System.Drawing.Size(750, 550)
 $form.StartPosition = "CenterScreen"
 $form.FormBorderStyle = 'FixedDialog'
 $form.MaximizeBox = $false
 $form.BackColor = [System.Drawing.Color]::Black
 
-$rdpFolder = "C:\Launcher"
-$sessions = @("test", "server2", "server3", "server4", "server5", "server6", "server7", "server8")
+$rdpFolder = "C:\Launcher" #!!!Update Path to match folder location in environment
+$sessions = @("test", "server2", "server3", "server4", "server5", "server6", "server7", "server8") #!!!Update Names to match preconfigured rdp session
 
 $font = New-Object System.Drawing.Font("Consolas", 12, [System.Drawing.FontStyle]::Bold)
 $titleFont = New-Object System.Drawing.Font("Consolas", 18, [System.Drawing.FontStyle]::Bold)
 
 $titleLabel = New-Object System.Windows.Forms.Label
-$titleLabel.Text = "LabNet RDP Launcher"
+$titleLabel.Text = "RDP Launcher" #!!!Popup box Title
 $titleLabel.ForeColor = [System.Drawing.Color]::Lime
 $titleLabel.BackColor = [System.Drawing.Color]::Black
 $titleLabel.Font = $titleFont
