@@ -1,29 +1,28 @@
-# Test change
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # Create the form
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Remote Desktop Launcher - LabNet"
-$form.Size = New-Object System.Drawing.Size(400, 300)
+$form.Size = New-Object System.Drawing.Size(500, 400)  # Increased Size
 $form.StartPosition = "CenterScreen"
 $form.FormBorderStyle = 'FixedDialog'
 $form.MaximizeBox = $false
 
-# Path to .rdp files
+# Path where your .rdp files are stored
 $rdpFolder = "C:\Launcher"
 
-# Session names (without .rdp extension)
-$sessions = @("server1", "server2", "server3", "server4", "server5", "server6")
+# Define your session names (without .rdp extension)
+$sessions = @("test", "server2", "server3", "server4", "server5", "server6", "server7", "server8")
 
 # Layout variables
-$buttonWidth = 120
-$buttonHeight = 30
+$buttonWidth = 140
+$buttonHeight = 40
 $padding = 10
 $buttonsPerRow = 3
 
 for ($i = 0; $i -lt $sessions.Count; $i++) {
-    $sessionName = $sessions[$i]  # Capture the session name for this button
+    $sessionName = $sessions[$i]
 
     $button = New-Object System.Windows.Forms.Button
     $button.Text = $sessionName
@@ -32,24 +31,21 @@ for ($i = 0; $i -lt $sessions.Count; $i++) {
     # Calculate position
     $row = [math]::Floor($i / $buttonsPerRow)
     $col = $i % $buttonsPerRow
-    $button.Location = New-Object System.Drawing.Point(
-        $padding + ($col * ($buttonWidth + $padding)),
-        $padding + ($row * ($buttonHeight + $padding))
-    )
+    $xPos = $padding + ($col * ($buttonWidth + $padding))
+    $yPos = $padding + ($row * ($buttonHeight + $padding))
+    $button.Location = New-Object System.Drawing.Point($xPos, $yPos)
 
-    # Capture sessionName per button to avoid closure issue
-    $thisSession = $sessionName
-
-    # Button click event
+    # Correct per-button event binding with captured variable
+    $currentSession = $sessionName
     $button.Add_Click({
-        $rdpPath = Join-Path $rdpFolder "$($thisSession).rdp"
+        $rdpPath = Join-Path $rdpFolder "$($currentSession).rdp"
         if (Test-Path $rdpPath) {
             Start-Process $rdpPath
         }
         else {
             [System.Windows.Forms.MessageBox]::Show("RDP file not found:`n$rdpPath","Error",[System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Error)
         }
-    })
+    }.GetNewClosure())
 
     $form.Controls.Add($button)
 }
