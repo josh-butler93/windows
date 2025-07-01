@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RDP Launcher - Retro Style</title>
+<style>
+    body {
+        background: radial-gradient(circle at center, rgba(0, 255, 0, 0.1) 0%, black 100%);
+        background-color: black;
+        color: #00FF00;
+        font-family: "Courier New", Courier, monospace;
+        text-align: center;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 10px solid rgba(0, 255, 0, 0.5);
+        border-radius: 25px;
+        box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.5), 0 0 30px rgba(0, 255, 0, 0.5);
+        padding: 20px;
+    }
+
+    h1 {
+        color: #00FF00;
+        text-shadow: 2px 2px 5px #00FF00, -2px -2px 5px #00FF00;
+        padding: 15px;
+        border-radius: 10px;
+        display: inline-block;
+        font-family: "Impact", "Arial Black", sans-serif;
+    }
+
+    h2, p {
+        color: #00FF00;
+        text-shadow: 1px 1px 3px #00FF00;
+        font-family: "Courier New", Courier, monospace;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        color: black;
+        background-color: #00FF00;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 0 10px #00FF00;
+        transition: transform 0.2s ease;
+    }
+
+    .button:hover {
+        background-color: black;
+        color: #00FF00;
+        border: 1px solid #00FF00;
+        animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+        100% { transform: translateX(0); }
+    }
+
+    #manualInput {
+        margin-top: 30px;
+    }
+
+    .input-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        width: 300px;
+        font-size: 16px;
+        background-color: black;
+        color: #00FF00;
+        border: 1px solid #00FF00;
+        box-shadow: 0 0 5px #00FF00;
+        text-align: center;
+        caret-color: #00FF00;
+    }
+
+    input[type="text"]:focus {
+        outline: none;
+        box-shadow: 0 0 10px #00FF00;
+    }
+
+    .tab-button {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 10px;
+        font-size: 16px;
+        color: #00FF00;
+        background-color: black;
+        border: 1px solid #00FF00;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 0 5px #00FF00;
+        transition: transform 0.2s ease;
+    }
+
+    .tab-button:hover {
+        animation: shake 0.3s;
+    }
+
+    .tab-active {
+        background-color: #00FF00;
+        color: black;
+    }
+
+    #sessionList {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        max-width: 600px;
+    }
+
+    .session-column {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Remote Desktop Launcher - LabNet Edition</h1>
+<p>Click a button below to launch an RDP session:</p>
+
+<div>
+    <button class="tab-button" id="onPremTab" onclick="toggleTab('on')">Ben On Prem</button>
+    <button class="tab-button" id="offPremTab" onclick="toggleTab('off')">Ben Off Prem</button>
+</div>
+
+<div id="sessionList"></div>
+
+<div id="manualInput">
+    <h2>Or type the session to launch:</h2>
+    <div class="input-container">
+        <input type="text" id="sessionInput" placeholder="Enter session URL or name" />
+    </div>
+    <button class="button" onclick="launchSession()">Launch</button>
+</div>
+
+<script>
+let activeTab = null;
+
+function toggleTab(type) {
+    const sessionList = document.getElementById('sessionList');
+    const onPremTab = document.getElementById('onPremTab');
+    const offPremTab = document.getElementById('offPremTab');
+
+    if (activeTab === type) {
+        activeTab = null;
+        onPremTab.classList.remove('tab-active');
+        offPremTab.classList.remove('tab-active');
+        sessionList.innerHTML = '';
+        return;
+    }
+
+    activeTab = type;
+    onPremTab.classList.remove('tab-active');
+    offPremTab.classList.remove('tab-active');
+
+    if (type === 'on') {
+        onPremTab.classList.add('tab-active');
+        renderSessions(["server1", "server2", "server3", "server4", "server5", "server6"]);
+    } else {
+        offPremTab.classList.add('tab-active');
+        renderSessions(["server7", "server8", "server9", "server10"]);
+    }
+}
+
+function renderSessions(servers) {
+    const sessionList = document.getElementById('sessionList');
+    sessionList.innerHTML = '';
+
+    let column;
+    servers.forEach((server, index) => {
+        if (index % 5 === 0) {
+            column = document.createElement('div');
+            column.classList.add('session-column');
+            sessionList.appendChild(column);
+        }
+
+        const btn = document.createElement('a');
+        btn.href = `file:///C:/Launcher/${server}.rdp`;  // Updated to file:/// links
+        btn.className = 'button';
+        btn.innerText = server;
+        column.appendChild(btn);
+    });
+}
+
+function launchSession() {
+    const session = document.getElementById('sessionInput').value.trim();
+    if (session) {
+        let url = session;
+        if (!session.startsWith('file:///')) {
+            // Normalize input to local .rdp file path
+            url = `file:///C:/Launcher/${session.replace(/\.rdp$/i, '')}.rdp`;
+        }
+        window.location.href = url;
+    } else {
+        alert("Please enter a valid session.");
+    }
+}
+</script>
+
+</body>
+</html>
