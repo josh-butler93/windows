@@ -1,0 +1,50 @@
+Matching Profile found: FindRollbackFailure - 3A43C9B5-05B3-4F7C-A955-88F991BB5A48
+SetupDiag version: 1.7.0.0
+System Information:
+	Machine Name = ****
+	Manufacturer = Dell Inc.
+	Model = Precision 3581
+	HostOSArchitecture = x64
+	FirmwareType = UEFI
+	BiosReleaseDate = 20240109000000.000000+000
+	BiosVendor = 1.10.1
+	BiosVersion = 1.10.1
+	HostOSVersion = 10.0.19045
+	HostOSBuildString = 19041.1.amd64fre.vb_release.191206-1406
+	TargetOSBuildString = 10.0.22621.5909 (ni_release_svc_prod1.250902-1823)
+	HostOSLanguageId = 1033
+	HostOSEdition = Enterprise
+	RegisteredAV = Trellix Endpoint Security
+	FilterDrivers = FileInfo
+	UpgradeStartTime = 9/16/2025 4:13:28 PM
+	UpgradeEndTime = 9/16/2025 5:36:02 PM
+	UpgradeElapsedTime = 01:22:34
+	RollbackStartTime = 9/16/2025 5:36:30 PM
+	RollbackEndTime = 9/16/2025 5:38:36 PM
+	RollbackElapsedTime = 00:02:06
+	CV = Bjx3cME1UkSgqKrH
+	ReportId = 603AAC94-F9EE-49BF-A534-C1D0FAB0A088
+
+
+Error: 0xc1900101-0x4000d SetupDiag reports rollback failure found.
+Last Phase = Pre OOBE Boot
+Last Operation = Machine-independent apply
+Error = 0xC1900101-0x4000D
+LogEntry: 
+
+Refer to "https://docs.microsoft.com/en-us/windows/desktop/Debug/system-error-codes" for error information.
+
+Last Setup Phase:
+Phase Name: Pre OOBE Boot
+	Phase Started: 9/16/2025 5:35:11 PM
+	Phase Ended: 1/1/0001 12:00:00 AM
+	Phase Time Delta: 00:00:00
+	Completed Successfully? False
+
+
+Last Setup Operation:
+Operation Name: Machine-independent apply
+	Operation Started: 9/16/2025 5:35:12 PM
+	Operation Ended: 1/1/0001 12:00:00 AM
+	Operation Time Delta: 0:00:00:00.0000000
+	Completed Successfully? False
